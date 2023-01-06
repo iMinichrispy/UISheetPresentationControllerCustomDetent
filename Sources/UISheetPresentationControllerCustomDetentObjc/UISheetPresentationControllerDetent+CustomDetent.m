@@ -24,7 +24,13 @@ UISheetPresentationControllerDetentIdentifier UISheetPresentationControllerDeten
 
 + (instancetype)customDetentWithHeight:(CGFloat)height {
     UISheetPresentationControllerDetentIdentifier identifier = UISheetPresentationControllerDetentIdentifierCustom(height);
-    return [UISheetPresentationControllerDetent _detentWithIdentifier:identifier constant:height];
+    if (@available(iOS 16.0, *)) {
+        return [UISheetPresentationControllerDetent customDetentWithIdentifier:identifier resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
+            return height;
+        }];
+    } else {
+        return [UISheetPresentationControllerDetent _detentWithIdentifier:identifier constant:height];
+    }
 }
 
 @end
